@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// A marketing claim proposed for a product formula,
+/// e.g. "Reduces wrinkles by 20% in 4 weeks".
+model Claim {
+  id          String   @id @default(cuid())
+  productName String
+  claimText   String
+  /// PENDING until first assessed, then JUSTIFIED / NOT_JUSTIFIED
+  /// (mirrors the latest assessment). SQLite has no native enums.
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assessments Assessment[]
+}
+
+/// One LLM verdict on whether a piece of evidence justifies a claim.
+/// Immutable: re-assessing a claim adds a new row, so the full
+/// history (evidence used, model, verdict) stays auditable.
+model Assessment {
+  id            String   @id @default(cuid())
+  claimId       String
+  claim         Claim    @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  /// Snapshot of the clinical study evidence that was assessed.
+  evidence      String
+  justified     Boolean
+  /// Model's confidence in its verdict, 0.0 – 1.0.
+  confidence    Float
+  reasoning     String
+  /// Provenance: which model and prompt produced this verdict.
+  model         String
+  promptVersion String
+  createdAt     DateTime @default(now())
+
+  @@index([claimId, createdAt])
+}
