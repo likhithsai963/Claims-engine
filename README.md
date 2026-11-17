@@ -29,7 +29,7 @@ NestJS 10 · Prisma 6 · SQLite · OpenAI API (Structured Outputs) · React 19 �
 
 ## Run it
 
-Requires Node.js 20+ and an OpenAI API key.
+Requires Node.js 22+ and an OpenAI API key.
 
 ### 1. Backend
 
