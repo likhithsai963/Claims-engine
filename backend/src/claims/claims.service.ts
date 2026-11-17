@@ -11,13 +11,6 @@ export class ClaimsService {
     private readonly assessor: ClaimAssessorService,
   ) {}
 
-  /**
-   * Assesses a claim against evidence and persists the verdict.
-   *
-   * The LLM is called BEFORE anything is written, so a provider failure
-   * leaves no half-saved rows. Claim + assessment are then written in one
-   * transaction.
-   */
   async assess(dto: AssessClaimDto): Promise<AssessmentResultDto> {
     const subject = await this.resolveSubject(dto);
 

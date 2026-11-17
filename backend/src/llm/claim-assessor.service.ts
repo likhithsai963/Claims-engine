@@ -14,7 +14,6 @@ import {
   SYSTEM_PROMPT,
 } from './assessment.prompt';
 
-/** Injection token for the OpenAI client; null when no API key is configured. */
 export const OPENAI_CLIENT = Symbol('OPENAI_CLIENT');
 
 export interface AssessmentInput {
@@ -43,7 +42,6 @@ export class ClaimAssessorService {
     this.model = config.get<string>('OPENAI_MODEL') || 'gpt-4o-mini';
   }
 
-  /** Asks the LLM whether the evidence justifies the claim. */
   async assess(input: AssessmentInput): Promise<AssessmentVerdict> {
     if (!this.openai) {
       throw new ServiceUnavailableException(
@@ -55,7 +53,7 @@ export class ClaimAssessorService {
     try {
       completion = await this.openai.chat.completions.create({
         model: this.model,
-        temperature: 0, // verdicts should be as repeatable as possible
+        temperature: 0,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: buildUserPrompt(input) },
@@ -66,7 +64,6 @@ export class ClaimAssessorService {
         },
       });
     } catch (err) {
-      // Log the detail server-side; never leak provider errors to the client.
       this.logger.error(`OpenAI request failed: ${(err as Error).message}`);
       throw new BadGatewayException('The LLM provider request failed');
     }

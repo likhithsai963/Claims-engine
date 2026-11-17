@@ -1,4 +1,3 @@
-/** Response body of POST /api/claims/assess. */
 export class AssessmentResultDto {
   claimId!: string;
   assessmentId!: string;

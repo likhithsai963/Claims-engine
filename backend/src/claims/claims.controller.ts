@@ -7,7 +7,6 @@ import { AssessmentResultDto } from './dto/assessment-result.dto';
 export class ClaimsController {
   constructor(private readonly claims: ClaimsService) {}
 
-  /** POST /api/claims/assess */
   @Post('assess')
   @HttpCode(HttpStatus.CREATED)
   assess(@Body() dto: AssessClaimDto): Promise<AssessmentResultDto> {

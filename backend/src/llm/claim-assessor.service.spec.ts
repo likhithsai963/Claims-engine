@@ -15,7 +15,6 @@ const input = {
 
 const config = { get: () => 'test-model' } as unknown as ConfigService;
 
-/** Builds a service around a fake OpenAI client whose `create` is a jest mock. */
 function setup(create: jest.Mock) {
   const client = { chat: { completions: { create } } } as unknown as OpenAI;
   return new ClaimAssessorService(client, config);

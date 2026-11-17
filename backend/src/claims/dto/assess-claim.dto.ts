@@ -27,7 +27,6 @@ export class AssessClaimDto {
   @MaxLength(200)
   productName?: string;
 
-  /** e.g. "Reduces wrinkles by 20% in 4 weeks" */
   @ValidateIf((dto: AssessClaimDto) => !dto.claimId)
   @Transform(trim)
   @IsString()
@@ -35,7 +34,6 @@ export class AssessClaimDto {
   @MaxLength(500)
   claimText?: string;
 
-  /** Clinical study results attached by the evaluator. */
   @Transform(trim)
   @IsString()
   @IsNotEmpty()

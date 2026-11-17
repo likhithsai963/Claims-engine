@@ -1,4 +1,3 @@
-/** Displays one assessment: Justified Yes/No, Confidence Score, Reasoning. */
 export default function AssessmentResult({ result }) {
   const { justified, confidence, reasoning, claimText, model, assessedAt } = result
   const percent = Math.round(confidence * 100)
